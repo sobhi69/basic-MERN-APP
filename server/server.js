@@ -1,21 +1,29 @@
+require('dotenv').config()
 const express = require("express")
 const app = express()
 const cors = require("cors")
-require("dotenv").config()
 const port = process.env.PORT || 5000
+
 app.use(cors())
 app.use(express.json())
-app.use(require("./routes/record"))
-const dbo = require("./db/conn")
+app.use(express.urlencoded({extended:false}))
 
-app.get("/", function(req, res) {
-    res.send("App is running")
+app.use('/record',require("./routes/record"))
+
+const conn = require("./db/conn")
+
+app.get("/", (req, res) => {
+    res.send("hi")
 })
 
-dbo.connectToMongoDB(function (error) {
-    if (error) throw error
+conn.on('error', (err) => {
+    console.error(err)
+    return
+})
 
+conn.once("open", () => {
+    console.log('connected to DB')
     app.listen(port, () => {
-        console.log("Server is running on port: " + port)
+        console.log(`app is alive at http://localhost:${port}`)
     })
 })

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 
 export default function Create() {
     const [form, setForm] = useState({
-        name: "",
+        recordName: "",
         position: "",
         level: ""
     })
@@ -15,11 +15,11 @@ export default function Create() {
         })
     }
 
-    async function onSubmit(e) {
+    const onSubmit = async (e) => {
         e.preventDefault()
 
         const newPerson = { ...form }
-        const response = await fetch(`${process.env.REACT_APP_YOUR_HOSTNAME}/record/add`, {
+        const response = await fetch(`http://localhost:4900/record/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -28,12 +28,12 @@ export default function Create() {
         })
 
         if (!response.ok) {
-            const message = `An error occurred: ${response.statusText}`
-            window.alert(message)
+            const data = await response.json()
+            alert(data.message)
             return
         }
 
-        setForm({ name: "", position: "", level: "" })
+        setForm({ recordName: "", position: "", level: "" })
         navigate("/")
     }
 
@@ -47,8 +47,8 @@ export default function Create() {
                         type="text"
                         className="form-control"
                         id="name"
-                        value={form.name}
-                        onChange={(e) => updateForm({ name: e.target.value })}
+                        value={form.recordName}
+                        onChange={(e) => updateForm({ recordName: e.target.value })}
                     />
                 </div>
                 <div className="form-group">

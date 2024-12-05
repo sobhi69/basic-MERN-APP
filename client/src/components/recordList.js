@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 const Record = (props) => {
     return (
         <tr>
-            <td>{props.record.name}</td>
+            <td>{props.record.recordName}</td>
             <td>{props.record.position}</td>
             <td>{props.record.level}</td>
             <td>
@@ -27,7 +27,7 @@ export default function RecordList() {
 
     useEffect(() => {
         async function getRecords() {
-            const response = await fetch(`${process.env.REACT_APP_YOUR_HOSTNAME}/record/`)
+            const response = await fetch(`http://localhost:4900/record/`)
 
             if (!response.ok) {
                 const message = `An error occurred: ${response.statusText}`
@@ -50,7 +50,7 @@ export default function RecordList() {
             return
         }
 
-        await fetch(`${process.env.REACT_APP_YOUR_HOSTNAME}/${id}`, {
+        await fetch(`http://localhost:4900/record/${id}`, {
             method: "DELETE"
         })
 

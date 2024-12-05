@@ -13,10 +13,10 @@ export default function Edit() {
     useEffect(() => {
         async function fetchData() {
             const id = params.id
-            const response = await fetch(`${process.env.REACT_APP_YOUR_HOSTNAME}/record/${id}`)
+            const response = await fetch(`http://localhost:4900/record/${id}`)
             if (!response.ok) {
-                const message = `An error occurred: ${response.statusText}`
-                window.alert(message)
+                const message = await response.json()
+                window.alert(message.message)
                 return
             }
 
@@ -45,7 +45,7 @@ export default function Edit() {
         e.preventDefault()
 
         const editedPerson = { ...form }
-        const response = await fetch(`${process.env.REACT_APP_YOUR_HOSTNAME}/update/${params.id}`, {
+        const response = await fetch(`http://localhost:4900/record/${params.id}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -54,8 +54,8 @@ export default function Edit() {
         })
 
         if (!response.ok) {
-            const message = `An error occurred: ${response.statusText}`
-            window.alert(message)
+            const message = await response.json()
+            window.alert(message.message)
             return
         }
 
@@ -72,8 +72,8 @@ export default function Edit() {
                         type="text"
                         className="form-control"
                         id="name"
-                        value={form.name}
-                        onChange={(e) => updateForm({ name: e.target.value })}
+                        value={form.recordName}
+                        onChange={(e) => updateForm({ recordName: e.target.value })}
                     />
                 </div>
                 <div className="form-group">
