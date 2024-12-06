@@ -10,6 +10,7 @@ const dbo = require("./db/conn")
 
 app.get("/", function(req, res) {
     res.send("App is running")
+    // fixed a bug
 })
 
 dbo.connectToMongoDB(function (error) {
