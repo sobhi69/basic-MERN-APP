@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 
-const Record = (props) => {
+const Record = ({record}) => {
     return (
         <tr>
-            <td>{props.record.recordName}</td>
-            <td>{props.record.position}</td>
-            <td>{props.record.level}</td>
+            <td>{record.recordName}</td>
+            <td>{record.position}</td>
+            <td>{record.level}</td>
             <td>
-                <Link className="btn btn-link" to={`/edit/${props.record._id}`}>Edit</Link> |
+                <Link className="btn btn-link" to={`/edit/${record._id}`}>Edit</Link> |
                 <button
                     className="btn btn-link"
                     onClick={() => {
-                        props.deleteRecord(props.record._id)
+                        props.deleteRecord(record._id)
                     }}
                 >
                     Delete
