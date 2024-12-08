@@ -1,13 +1,39 @@
-import React, { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import React, { useState, useEffect } from "react"
+import { useParams, useNavigate } from "react-router-dom"
 
-export default function Create() {
+export default function Edit() {
     const [form, setForm] = useState({
         name: "",
         position: "",
         level: ""
     })
+    const params = useParams()
     const navigate = useNavigate()
+
+    useEffect(() => {
+        async function fetchData() {
+            const id = params.id
+            const response = await fetch(`http://localhost:4900/record/${id}`)
+            if (!response.ok) {
+                const message = await response.json()
+                window.alert(message.message)
+                return
+            }
+
+            const record = await response.json()
+            if (!record) {
+                window.alert(`Record with id ${id} not found`)
+                navigate("/")
+                return
+            }
+
+            setForm(record)
+        }
+
+        fetchData()
+
+        return
+    }, [params.id, navigate])
 
     function updateForm(value) {
         setForm((prev) => {
@@ -18,28 +44,27 @@ export default function Create() {
     async function onSubmit(e) {
         e.preventDefault()
 
-        const newPerson = { ...form }
-        const response = await fetch(`${process.env.REACT_APP_YOUR_HOSTNAME}/record/add`, {
-            method: "POST",
+        const editedPerson = { ...form }
+        const response = await fetch(`http://localhost:4900/record/${params.id}`, {
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(newPerson)
+            body: JSON.stringify(editedPerson)
         })
 
         if (!response.ok) {
-            const message = `An error occurred: ${response.statusText}`
-            window.alert(message)
+            const data = await response.json()
+            window.alert(data.message)
             return
         }
 
-        setForm({ name: "", position: "", level: "" })
         navigate("/")
     }
 
     return (
         <div>
-            <h3>Create New Record</h3>
+            <h3>Update Record</h3>
             <form onSubmit={onSubmit}>
                 <div className="form-group">
                     <label htmlFor="name">Name</label>
@@ -47,8 +72,8 @@ export default function Create() {
                         type="text"
                         className="form-control"
                         id="name"
-                        value={form.name}
-                        onChange={(e) => updateForm({ name: e.target.value })}
+                        value={form.recordName}
+                        onChange={(e) => updateForm({ recordName: e.target.value })}
                     />
                 </div>
                 <div className="form-group">
@@ -102,7 +127,7 @@ export default function Create() {
                 <div className="form-group">
                     <input
                         type="submit"
-                        value="Create person"
+                        value="Update Record"
                         className="btn btn-primary"
                     />
                 </div>

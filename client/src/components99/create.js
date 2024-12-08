@@ -1,39 +1,13 @@
-import React, { useState, useEffect } from "react"
-import { useParams, useNavigate } from "react-router-dom"
+import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
-export default function Edit() {
+export default function Create() {
     const [form, setForm] = useState({
-        name: "",
+        recordName: "",
         position: "",
         level: ""
     })
-    const params = useParams()
     const navigate = useNavigate()
-
-    useEffect(() => {
-        async function fetchData() {
-            const id = params.id
-            const response = await fetch(`${process.env.REACT_APP_YOUR_HOSTNAME}/record/${id}`)
-            if (!response.ok) {
-                const message = `An error occurred: ${response.statusText}`
-                window.alert(message)
-                return
-            }
-
-            const record = await response.json()
-            if (!record) {
-                window.alert(`Record with id ${id} not found`)
-                navigate("/")
-                return
-            }
-
-            setForm(record)
-        }
-
-        fetchData()
-
-        return
-    }, [params.id, navigate])
 
     function updateForm(value) {
         setForm((prev) => {
@@ -41,30 +15,31 @@ export default function Edit() {
         })
     }
 
-    async function onSubmit(e) {
+    const onSubmit = async (e) => {
         e.preventDefault()
 
-        const editedPerson = { ...form }
-        const response = await fetch(`${process.env.REACT_APP_YOUR_HOSTNAME}/update/${params.id}`, {
+        const newPerson = { ...form }
+        const response = await fetch(`http://localhost:4900/record/`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(editedPerson)
+            body: JSON.stringify(newPerson)
         })
 
         if (!response.ok) {
-            const message = `An error occurred: ${response.statusText}`
-            window.alert(message)
+            const data = await response.json()
+            alert(data.message)
             return
         }
 
+        setForm({ recordName: "", position: "", level: "" })
         navigate("/")
     }
 
     return (
         <div>
-            <h3>Update Record</h3>
+            <h3>Create New Record</h3>
             <form onSubmit={onSubmit}>
                 <div className="form-group">
                     <label htmlFor="name">Name</label>
@@ -72,8 +47,8 @@ export default function Edit() {
                         type="text"
                         className="form-control"
                         id="name"
-                        value={form.name}
-                        onChange={(e) => updateForm({ name: e.target.value })}
+                        value={form.recordName}
+                        onChange={(e) => updateForm({ recordName: e.target.value })}
                     />
                 </div>
                 <div className="form-group">
@@ -127,7 +102,7 @@ export default function Edit() {
                 <div className="form-group">
                     <input
                         type="submit"
-                        value="Update Record"
+                        value="Create person"
                         className="btn btn-primary"
                     />
                 </div>

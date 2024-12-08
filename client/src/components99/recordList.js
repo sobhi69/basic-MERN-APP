@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 
-const Record = (props) => {
+const Record = ({record,deleteRecord}) => {
     return (
         <tr>
-            <td>{props.record.name}</td>
-            <td>{props.record.position}</td>
-            <td>{props.record.level}</td>
+            <td>{record.recordName}</td>
+            <td>{record.position}</td>
+            <td>{record.level}</td>
             <td>
-                <Link className="btn btn-link" to={`/edit/${props.record._id}`}>Edit</Link> |
+                <Link className="btn btn-link" to={`/edit/${record._id}`}>Edit</Link> |
                 <button
                     className="btn btn-link"
                     onClick={() => {
-                        props.deleteRecord(props.record._id)
+                        deleteRecord(record._id)
                     }}
                 >
                     Delete
@@ -27,7 +27,7 @@ export default function RecordList() {
 
     useEffect(() => {
         async function getRecords() {
-            const response = await fetch(`${process.env.REACT_APP_YOUR_HOSTNAME}/record/`)
+            const response = await fetch(`http://localhost:4900/record/`)
 
             if (!response.ok) {
                 const message = `An error occurred: ${response.statusText}`
@@ -50,7 +50,7 @@ export default function RecordList() {
             return
         }
 
-        await fetch(`${process.env.REACT_APP_YOUR_HOSTNAME}/${id}`, {
+        await fetch(`http://localhost:4900/record/${id}`, {
             method: "DELETE"
         })
 
