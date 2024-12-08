@@ -1,7 +1,7 @@
 import React from "react"
 import Records from "./components/Records"
 import { Routes,Route } from "react-router-dom"
-import Edit from "./components/Edit"
+import Edit from "./components99/edit"
 import Create from "./components/Create"
 const App = () => {
 

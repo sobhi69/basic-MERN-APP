@@ -46,7 +46,7 @@ export default function Edit() {
 
         const editedPerson = { ...form }
         const response = await fetch(`http://localhost:4900/record/${params.id}`, {
-            method: "POST",
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json"
             },
