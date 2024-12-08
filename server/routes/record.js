@@ -19,7 +19,7 @@ recordRoutes.get('/', getAllrecords)
 // some operations with the id paramater
 recordRoutes.route('/:id')
     .get(getOneRecord, retrieveRecord)
-    .post(getOneRecord, patchRecord)
+    .patch(getOneRecord, patchRecord)
     .delete(getOneRecord, deleteRecord)
 
 module.exports = recordRoutes

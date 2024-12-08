@@ -54,8 +54,8 @@ export default function Edit() {
         })
 
         if (!response.ok) {
-            const message = await response.json()
-            window.alert(message.message)
+            const data = await response.json()
+            window.alert(data.message)
             return
         }
 

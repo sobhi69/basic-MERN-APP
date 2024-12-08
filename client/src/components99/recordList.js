@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 
-const Record = ({record}) => {
+const Record = ({record,deleteRecord}) => {
     return (
         <tr>
             <td>{record.recordName}</td>
@@ -12,7 +12,7 @@ const Record = ({record}) => {
                 <button
                     className="btn btn-link"
                     onClick={() => {
-                        props.deleteRecord(record._id)
+                        deleteRecord(record._id)
                     }}
                 >
                     Delete
