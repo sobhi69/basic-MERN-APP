@@ -18,9 +18,7 @@ const Record = ({record,deleteRecord}) => {
 }
 
 const Records = () => {
-    const [records,setRecords] = useState([
-        {recordName:"Mohamed",position:"Editor",level:"Senior",_id:"6751627516adee465c66a6c8"}
-    ])
+    const [records,setRecords] = useState([])
 
     useEffect(() => {
         const getRecords = async () => {
